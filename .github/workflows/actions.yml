@@ -1,0 +1,92 @@
+name: Build and Push Docker Image on Tag
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.2
+          tools: composer:v2
+          coverage: xdebug
+
+      - name: Cache Composer dependencies (www)
+        uses: actions/cache@v4
+        with:
+          path: www/vendor
+          key: composer-www-cache-${{ runner.os }}-${{ hashFiles('www/composer.lock') }}
+          restore-keys: |
+            composer-www-cache-${{ runner.os }}-
+
+      - name: Install Dependencies (www)
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        working-directory: www
+
+      - name: Cache Composer dependencies (www/src)
+        uses: actions/cache@v4
+        with:
+          path: www/src/vendor
+          key: composer-src-cache-${{ runner.os }}-${{ hashFiles('www/src/composer.lock') }}
+          restore-keys: |
+            composer-src-cache-${{ runner.os }}-
+
+      - name: Install Dependencies (www/src)
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        working-directory: www/src
+
+      - name: Run Tests
+        run: ./vendor/bin/pest --coverage --min=50
+        working-directory: www
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+          install: true
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ vars.GHCR_USER }}
+          password: ${{ secrets.GHCR_TOKEN }}
+
+      - name: Extract Tag Name
+        id: extract-tag
+        run: |
+          TAG_NAME="${GITHUB_REF#refs/tags/}"
+          echo "TAG_NAME=${TAG_NAME}" >> $GITHUB_OUTPUT
+          echo "Tag extraída: ${TAG_NAME}"
+
+      - name: Build and Push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/integra:latest
+            ghcr.io/${{ github.repository_owner }}/integra:${{ steps.extract-tag.outputs.TAG_NAME }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
