@@ -1,0 +1,150 @@
+<?php
+
+return [
+    //Dados para conexão com o Redis
+    'redis' => [
+        'hostname' => '{{redis-hostname}}',
+        'port' => 6379
+    ],
+    'params' => [
+        'ifood' => [
+            'client_id' => '{{ifood-client-id}}',
+            'client_secret' => '{{ifood-client-secret}}',
+            'grant_type' => 'client_credentials',
+            'uri' => 'https://merchant-api.ifood.com.br',
+            'taximachine_ifood_disponivel' => '{{url-machine}}/api/integracaoIntegra/integracaoIfoodDisponivel',
+            'taximachine_ifood_empresa_status' => '{{url-machine}}/api/integracaoIntegra/statusIntegracaoIfood',
+            'max_polling_try' => 3,
+            'time_minutes_error_notification' => 10, // Em minutos
+            'expire_order_code_confirmation' => 172800, // Em segundos,
+            'expire_order_code_invalid' => 300, // Em segundos
+            'webhook_client_id' => '{{ifood-webhook-client-id}}',
+            'webhook_client_secret' => '{{ifood-webhook-client-secret}}',
+        ],
+        'Iza' => [
+            'url' => 'https://izacorehmg.iza.com.vc/api/integrations',
+            'maxInstancesCreatePerson' => 1,
+            'maxInstancesSearchContract' => 1,
+            'maxInstancesCreatePeriod' => 1,
+            'maxInstancesCancelPeriod' => 1,
+            'maxInstancesFinishPeriod' => 1,
+            'maxInstancesWebhookPerson' => 1,
+            'maxInstancesWebhookPeriod' => 1,
+            'maxInstancesSendPosition' => 1,
+            'maxEventsAtATime' => 100,
+            'maxEventsAtATimePerson' => 100,
+            'maxEventsAtATimePosition' => 100,
+            'maxAttemptsRequest' => 5, // 5 in production
+            'minutesIntervalForEventsRetry' => 3, // minutes
+            'maxInstancesCheckCompaniesForDisable' => 1,
+            'minutesIntervalForDisableCompany' => 43200, // Intervalo de 30 dias em minutos
+            'maxEventsAtATimeCheckCompaniesForDisable' => 100,
+            'url_verify_period' => '{{url-machine}}/api/integracaoIntegra/verifyPeriodsIza',
+            'token_verify_period' => 'd1c88f66eb373fd6f71b42df6d4cf9a5',
+            'webhook' => [
+                'url_person' => '{{url-machine}}/api/integracaoIntegra/webhookIzaPerson',
+                'token_person' => '3823aa8cd5fcf69401cc259173b76324',
+                'url_period' => '{{url-machine}}/api/integracaoIntegra/webhookIzaPeriod',
+                'token_period' => '634104cdcd87e6865f0bd86a096fd3f2',
+                'url_error' => '{{url-machine}}/api/integracaoIntegra/webhookIzaErrors',
+                'token_error' => '89341034cdcd87e6215f0bd86a096fd5f',
+                'url_notification' => '{{url-machine}}/api/integracaoIntegra/webhookIzaPendencias',
+                'token_notification' => 'c343896eebcde8085724b00d06dd60b7',
+                'url_disabled' => '{{url-machine}}/api/integracaoIntegra/webhookIzaDisabledCentrals',
+                'token_disabled' => '',
+            ],
+        ],
+        'delivery' => [
+            'url_webhook_orders' => '{{url-machine}}/api/integracaoIntegra/receiveOrdersEvents',
+            'jwt_secret' => 'c343896eebcde8085724b00d06dd60b7',
+            'providers_allowed_jwt' => ['anotaai', 'neemo', 'aiqfome'],
+            'urlWebhookEvents' => '{{url-machine}}/integra/delivery/webhook',
+        ],
+        'delivery_direto' => [
+            'urlStoreAdmin' => 'https://deliverydireto.com.br/admin-api/v1',
+            'urlStoreAdminToken' => 'https://deliverydireto.com.br/admin-api/token',
+            'client_id' => '',
+            'client_secret' => '',
+        ],
+        'delivery_much' => [
+            'urlCreateIntegration' => 'https://bffweb-webhook-dev.devmuch.io/dispatcher/partner/machine',
+        ],
+        'anotaai' => [
+            'urlBase' => 'https://api-parceiros.anota.ai/partnerauth',
+            'urlOauth' => 'https://oauth-public-order-api.anota.ai/authentication/v1.0/oauth/token',
+            'urlCreateWebhook' => 'https://public-api.anota.ai/developers-portal/v1.0/linkpage-by-token',
+            'client_id' => '',
+            'client_secret' => '',
+        ],
+        'machine' => [
+            'client_secret' => '9714347cca0af8803f254e49e393775c',
+        ],
+        'neemo' => [
+            'urlBase' => 'https://deliveryapp.neemo.com.br/api/integration/v1',
+            'orderModeActived' => true,
+        ],
+        'aiqfome' => [
+            'signature' =>  '9714347cca0af8803f254e49e393775c',
+            'url' => 'https://purple-box.aiqfome.io/alfredo',
+            'url_send_merchants_invalid' => '{{url-machine}}/api/integracaoIntegra/sendMerchantsInvalid',
+            'credentials' => [
+                'client_id' => 'gaudium',
+                'client_secret' => 'o0jOTGQRAtgZzdTzrvpg8BKXGSDJa693',
+                'aiq-client-authorization' => 'YWlxLWI6OEV1b0pwWjVWZjR1ZWVvdTNmVkNpcFl5UGlBdzR6R3BrT2RNZEFIT3hOTExrdDh4YzJjaWFDZW1RCg==',
+                'aiq-user-agent' => 'aiq',
+            ],
+            'timeToRetry' => 10,
+            'maxOrdersAtATime' => 20,
+            'maxMerchantsInvalid' => 100,
+            'maxAttemptsRequest' => 3,
+        ],
+        'cacheIntegra' => [
+            'url_batch_entities' => '{{url-machine}}/api/integracaoIntegra/batchEntities',
+            'token' => 'c343896eebcde8085724b00d06dd60b7',
+        ],
+        'openDelivery' => [
+            'signature' => '9714347cca0af8803f254e49e393775c',
+            'secret' => '2d88c2a94b74408b8f1c1c68b5b4c93c5068d2d4a8da5f0ec7ef5241e8d1474b',
+            'url_get_order_details' => '{{url-machine}}/api/integracaoIntegra/getOrderDetails',
+            'url_get_orders_tracking' => '{{url-machine}}/api/integracaoIntegra/getOrdersTracking',
+            'url_verify_credentials' => '{{url-machine}}/api/integracaoIntegra/verifyCredentials',
+            'maxAttemptsRequest' => 3,
+            'timeToRetry' => 10, // Tempo em segundos
+            'maxEvents' => 20,
+            'credentials' => [
+                '1d86e953-61b2-4bda-8ad2-cde8836d62b9' => 'cardapioweb',
+            ],
+            'provider' => [
+                'jotaja' => [
+                    'url' => 'https://dbgapi-gamadev.taximachine.com.br/jotaja/webhook.php',
+                    'X-App-Id' => '6151cc5a-9f31-4491-8763-b42b0c9314c2',
+                ],
+                'saipos' => [
+                    'url' => 'https://logistics-api-homolog.saipos.com/delivery-tracking/tracking-event-webhook',
+                    'X-App-Id' => '6151cc5a-9f31-4491-8763-b42b0c9314c2',
+                ],
+                'cardapioweb' => [
+                    'url' => 'https://integracao.cardapioweb.com/api/open_delivery',
+                ],
+                'ecletica' => [
+                    'url' => '',
+                    'X-App-Id' => '6151cc5a-9f31-4491-8763-b42b0c9314c2',
+                ],
+            ]
+        ],
+        'discord' => [
+            'payments_webhook' => '',
+        ],
+        'pagarMe' => [
+            'url' => '{{url-machine}}/api/integracaoPagarmeV5',
+            'logo_url' => 'https://avatars.githubusercontent.com/u/3846050?s=200',
+        ],
+        'pagZoop' => [
+            'url' => '{{url-machine}}/api/integracaoPagzoop',
+            'logo_url' => 'https://www.zoop.com.br/apple-touch-icon.png',
+        ],
+        'fcm' => [
+            'baseUrl' => 'https://fcm.googleapis.com',
+        ],
+    ]
+];

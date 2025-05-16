@@ -1,0 +1,20 @@
+{
+    "require-dev": {
+        "pestphp/pest": "^2.34",
+        "pestphp/pest-plugin-type-coverage": "^2.8",
+        "mockery/mockery": "^1.6",
+        "pestphp/pest-plugin-faker": "^2.0"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "./vendor/bin/pest",
+        "test-profile": "./vendor/bin/pest --profile",
+        "test-compact": "./vendor/bin/pest --compact",
+        "test-coverage": "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage --min=80",
+        "test-coverage-html": "XDEBUG_MODE=coverage ./vendor/bin/pest --coverage-html ./tests-result"
+    }
+}

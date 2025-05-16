@@ -1,0 +1,6 @@
+www/mchlogtoolkit
+www/logs
+.DS_Store
+www/vendor
+www/src/vendor
+www/tests-result

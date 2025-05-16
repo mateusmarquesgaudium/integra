@@ -1,0 +1,8 @@
+<?php
+namespace src\ifood\Enums;
+abstract class DeliveryConfirmationError
+{
+    const ORDER_ALREADY_CONFIRMED = 'ORDER_ALREADY_CONFIRMED';
+    const ORDER_ALREADY_CANCELLED = 'ORDER_ALREADY_CANCELLED';
+    const MAX_ATTEMPTS_ON_CODE_CONFIRMATION = 'MAX_ATTEMPTS_ON_CODE_CONFIRMATION';
+}

@@ -1,0 +1,12 @@
+{
+    "require": {
+        "ramsey/uuid": "^4.7",
+        "amphp/parallel": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "src\\Fcm\\Http\\": "Fcm/Http/",
+            "src\\geral\\": "geral/"
+        }
+    }
+}

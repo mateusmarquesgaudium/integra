@@ -1,0 +1,9 @@
+#! /bin/sh
+sleep 20
+/usr/bin/php /mnt/efs/www/html/integra/ifood/v2/dispatch.php
+sleep 30
+/usr/bin/php /mnt/efs/www/html/integra/ifood/v2/dispatch.php
+sleep 15
+/usr/bin/php /mnt/efs/www/html/integra/ifood/v2/dispatch.php
+sleep 15
+/usr/bin/php /mnt/efs/www/html/integra/ifood/v2/dispatch.php

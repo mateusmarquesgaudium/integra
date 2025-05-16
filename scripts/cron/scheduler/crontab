@@ -1,0 +1,54 @@
+SHELL=/bin/bash
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+MAILTO=root
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+#iFood
+0,30 * * * * root /mnt/efs/scripts/cron/processIfoodStatus.sh
+* * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh ifood/v2/processPendingOrders ifood/v2/processOrderEvents
+
+#FCM
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh fcm/jobs/processSendAsynchronousEvents
+
+#IZA
+*/10 * * * * root /mnt/efs/scripts/cron/processoIzaCheckErrors.sh
+0-59 * * * * root /mnt/efs/scripts/cron/processoIzaBash.sh common/processCreatePerson common/processSearchContract common/processSendPosition common/processCheckCompaniesForDisable
+0-59 * * * * root /mnt/efs/scripts/cron/processoIzaBash.sh webhooks/processWebhookPeriod webhooks/processWebhookPerson webhooks/processWebhookNotificationPending webhooks/processWebhookDisabledCentrals
+0-59 * * * * root /mnt/efs/scripts/cron/processoIzaBash.sh planPerRequest/processCreatePeriod planPerRequest/processFinishPeriod planPerRequest/processCancelPeriod
+0-59 * * * * root /mnt/efs/scripts/cron/processoIzaBash.sh planPerStop/processCreateStopPeriod planPerStop/processFinishStopPeriod planPerStop/processCancelStopPeriod
+0 * * * * root /mnt/efs/scripts/cron/processoIzaBash.sh planPerRequest/processVerifyPeriodInProgress
+
+#Delivery Direto
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh deliveryDireto/v1/processPendingOrders
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh delivery/v1/processWebhookEvents delivery/v1/processInTransitEvents delivery/v1/processFinishedEvents
+
+#Anota AI
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh anotaai/v1/processPendingOrders anotaai/v1/processVerifyStatusOrders
+
+#Neemo
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh neemo/v1/processPendingOrders neemo/v1/processVerifyStatusOrders
+
+#Open Delivery
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh opendelivery/webhook/process/processNotifyProviders opendelivery/webhook/process/processVerifyUnattended opendelivery/webhook/process/processVerifyEvents
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh opendelivery/process/getDetailsOrder
+
+#Aiqfome
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh aiqfome/process/processSendMerchantsInvalid aiqfome/process/processGetOrderDetails aiqfome/process/processRefreshTokenAIQFome
+
+#Payments
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh pagzoop/v1/processWebhookEvents
+0-59 * * * * root /mnt/efs/scripts/cron/processoIntegraBash.sh pagarme/v5/processWebhookEvents
+
+#Limpeza de logs
+0 1 * * * root find /mnt/efs/applog/mch/log_integracao/log_integracao* -mtime +2 -exec rm {} \;
+0 5 * * * root find /mnt/efs/applog/mch/log_request/log_request* -mtime +2 -exec rm {} \;
